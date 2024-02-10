@@ -56,7 +56,7 @@ public class AnnonceController {
     UserRepository userRepository;
 
     @GetMapping
-    @PreAuthorize("hasRole('ADMIN')")
+//    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<Resultat> getAllAnnonce() {
         try {
             List<Annonce> an = annonceService.getAllAnnonce();
@@ -239,6 +239,7 @@ public class AnnonceController {
             @RequestParam("idVoiture") String idVoiture,
             @RequestParam("prix") double prix,
             @RequestParam("photo") MultipartFile photo) {
+        System.out.println("tongba tsara nge le izsy ee");
         try {
             int etat = 3;
             Date currentDate = new Date();

@@ -28,7 +28,7 @@ public class SecurityConfig {
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
                 .authorizeRequests((requests) -> requests
-                        .requestMatchers( "/tomobilina/auth/signin","/tomobilina/auth/signup").permitAll()
+                        .requestMatchers( "/tomobilina/auth/signin","/tomobilina/auth/signup","/tomobilina/annonce/valid").permitAll()
                         .requestMatchers( "/ws/**","/ws","/tomobilina/messenger/**").permitAll()
 //                        .antMatchers(HttpMethod.GET,"/categorys/**","marques")
                         .anyRequest().authenticated())
