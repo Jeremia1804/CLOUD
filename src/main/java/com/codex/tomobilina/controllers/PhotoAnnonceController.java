@@ -23,16 +23,16 @@ import org.springframework.web.multipart.MultipartFile;
 
 @CrossOrigin(origins = "*", maxAge = 3600)
 @RestController
-@RequestMapping("tomobilina/photo_annonce")
+@RequestMapping("/tomobilina/photo_annonce")
 public class PhotoAnnonceController {
     @Autowired
     private PhotoAnnonceService photoService;
     
     @PostMapping("/add")
-    public ResponseEntity<Resultat> savePhoto(@RequestParam("file") MultipartFile file,
+    public ResponseEntity<Resultat> savePhoto(@RequestParam("photo") MultipartFile photo,
             @RequestParam("idannonce") String idAnnonce) {
         try {
-            Resultat resultat = new Resultat("CREATED", null, photoService.savePhotoAnnonce(file, idAnnonce));
+            Resultat resultat = new Resultat("CREATED", null, photoService.savePhotoAnnonce(photo, idAnnonce));
             return new ResponseEntity<>(resultat, HttpStatus.CREATED);
         } catch (Exception e) {
             Resultat resultat = new Resultat("NOT CREATED", e.getMessage(), null);

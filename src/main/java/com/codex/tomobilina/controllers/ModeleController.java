@@ -11,14 +11,12 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Optional;
-import jakarta.persistence.EntityNotFoundException;
 import com.codex.tomobilina.models.Modele;
 import com.codex.tomobilina.models.Marque;
 import com.codex.tomobilina.models.Categorie;
 import com.codex.tomobilina.models.Resultat;
 import com.codex.tomobilina.services.ImageUploadingService;
 import com.codex.tomobilina.services.ModeleService;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 /**
@@ -27,7 +25,7 @@ import org.springframework.web.multipart.MultipartFile;
  */
 @CrossOrigin(origins = "*", maxAge = 3600)
 @RestController
-@RequestMapping("tomobilina/modeles")
+@RequestMapping("/tomobilina/modeles")
 public class ModeleController {
 
     @Autowired
@@ -109,11 +107,10 @@ public class ModeleController {
             @RequestParam("annee") int annee,
             @RequestParam("nbrplaces") int nbrplaces,
             @RequestParam("nbrportes") int nbrportes,
-            @RequestParam("photo") MultipartFile photo,
-            @RequestParam(required = false) int etat) {
+            @RequestParam("photo") MultipartFile photo) {
         try {
             String image = imageService.upload(photo);
-            Modele modele = new Modele(new Marque(idmarque), new Categorie(idcategorie), nommodele, annee, nbrplaces, nbrportes, image, etat);
+            Modele modele = new Modele(new Marque(idmarque), new Categorie(idcategorie), nommodele, annee, nbrplaces, nbrportes, image, 1);
             Resultat resultat = new Resultat("CREATED", null, modeleService.saveModele(modele));
             return new ResponseEntity<>(resultat, HttpStatus.CREATED);
         } catch (Exception e) {

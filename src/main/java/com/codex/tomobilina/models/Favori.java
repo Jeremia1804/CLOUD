@@ -22,6 +22,13 @@ public class Favori {
     
     private int etat;
 
+    public Favori(User user, Annonce annonce, Timestamp dateheure, int etat) {
+        this.user = user;
+        this.annonce = annonce;
+        this.dateheure = dateheure;
+        this.etat = etat;
+    }
+
     public Favori() {
     }
 

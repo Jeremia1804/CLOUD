@@ -11,14 +11,14 @@ public class VenteWeek {
     private double totalvente;
     
     @Column(name = "last")
-    private double last;
+    private Double last;
 
 
     public double getTotalvente() {
         return totalvente;
     }
 
-    public void setTotalvente(double totalvente) {
+    public void setTotalvente(Double totalvente) {
         this.totalvente = totalvente;
     }
 
@@ -26,7 +26,7 @@ public class VenteWeek {
         return last;
     }
 
-    public void setLast(double last) {
+    public void setLast(Double last) {
         this.last = last;
     }
 }

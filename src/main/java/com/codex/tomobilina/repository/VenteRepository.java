@@ -1,7 +1,9 @@
 package com.codex.tomobilina.repository;
 
 import com.codex.tomobilina.models.BESTVENTE;
+import com.codex.tomobilina.models.Total_vendu;
 import com.codex.tomobilina.models.V_vente_Commission;
+import com.codex.tomobilina.models.Vendu_tous;
 import com.codex.tomobilina.models.Vente;
 import com.codex.tomobilina.models.VenteLastWeek;
 import com.codex.tomobilina.models.VenteWeek;
@@ -26,4 +28,10 @@ public interface VenteRepository  extends JpaRepository<Vente, String> {
     
     @Query("select v from BESTVENTE v")
     List<BESTVENTE> findBESTVENTE();
+    
+    @Query("select v from Vendu_tous v")
+    List<Vendu_tous> findVenduTous();
+    
+    @Query("select v from Total_vendu v")
+    Total_vendu findTotalVendu();
 }

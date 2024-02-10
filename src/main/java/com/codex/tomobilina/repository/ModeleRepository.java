@@ -5,6 +5,7 @@
 package com.codex.tomobilina.repository;
 
 import com.codex.tomobilina.models.Modele;
+import com.codex.tomobilina.models.V_StatModele;
 import java.util.List;
 
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -28,4 +29,7 @@ public interface ModeleRepository extends JpaRepository<Modele, String> {
     List<Modele> findByNomModeleContainingIgnoreCaseAndMarque_IdMarqueInAndCategorie_IdCategorieInAndNbrPlacesBetweenAndNbrPortesBetweenAndAnneeBetween(
             String nomModele, List<String> marques, List<String> categories, Integer minNbrPlaces, Integer maxNbrPlaces, Integer minNbrPortes, Integer maxNbrPortes, Integer minAnnee, Integer maxAnnee
     );
+    
+    @Query("select v from V_StatModele v")
+    List<V_StatModele> findStatModel();
 }

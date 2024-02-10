@@ -8,11 +8,9 @@ import com.codex.tomobilina.models.BoiteVitesse;
 import com.codex.tomobilina.models.Resultat;
 import com.codex.tomobilina.services.BoiteVitesseService;
 import java.util.Optional;
-import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -29,7 +27,7 @@ import org.springframework.web.bind.annotation.RestController;
  */
 @CrossOrigin(origins = "*", maxAge = 3600)
 @RestController
-@RequestMapping("tomobilina/boite_vitesse")
+@RequestMapping("/tomobilina/boite_vitesse")
 public class BoiteVitesseController {
     @Autowired
     private BoiteVitesseService boite_vitesseService;

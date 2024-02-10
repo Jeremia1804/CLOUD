@@ -3,8 +3,8 @@ CREATE TABLE roles (
     id int DEFAULT nextval('seq_roles') PRIMARY KEY,
     name VARCHAR(20) NOT NULL
 );
+
 INSERT INTO roles(name) VALUES('ROLE_USER');
-INSERT INTO roles(name) VALUES('ROLE_MODERATOR');
 INSERT INTO roles(name) VALUES('ROLE_ADMIN');
 
 CREATE SEQUENCE seq_user;
@@ -18,21 +18,15 @@ CREATE TABLE users(
     dateheure TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
-INSERT INTO users (id, username, email, dtn, sexe, password, dateheure)
+INSERT INTO users (username, email, dtn, sexe, password, dateheure)
 VALUES
-  (1, 'utilisateur1', 'utilisateur1@example.com', '1990-01-01', 1, 'motdepasse1', '2024-01-25T12:34:56');
-INSERT INTO users (id, username, email, dtn, sexe, password, dateheure)
+  ('admin', 'admin@gmail.com', '1990-01-01', 1, 'admin', '2024-01-25T12:34:56');
+INSERT INTO users (username, email, dtn, sexe, password, dateheure)
 VALUES
-  (2, 'utilisateur2', 'utilisateur1@example.com', '1990-01-01', 1, 'motdepasse2', '2024-01-25T12:34:56');
-INSERT INTO users (id, username, email, dtn, sexe, password, dateheure)
+  ('rakoto', 'rakoto@gmail.com', '1980-01-05', 1, 'rakoto', '2024-01-25T12:34:56');
+INSERT INTO users (username, email, dtn, sexe, password, dateheure)
 VALUES
-  (3, 'utilisateur3', 'utilisateur1@example.com', '1990-01-01', 1, 'motdepasse3', '2024-12-31T12:34:56');
-  INSERT INTO users (id, username, email, dtn, sexe, password, dateheure)
-VALUES
-  (4, 'utilisateur3', 'utilisateur1@example.com', '1990-01-01', 1, 'motdepasse4', '2024-01-18T12:34:56');
-INSERT INTO users (id, username, email, dtn, sexe, password, dateheure)
-VALUES
-  (5, 'utilisateur3', 'utilisateur1@example.com', '1990-01-01', 1, 'motdepasse5', '2024-01-29T12:34:56');
+  ('jean', 'jean@gmail.com', '1995-05-08', 1, 'jean', '2024-12-31T12:34:56');
 
 CREATE TABLE user_roles (
     user_id int,
@@ -40,6 +34,10 @@ CREATE TABLE user_roles (
     FOREIGN KEY (user_id) REFERENCES users(id),
     FOREIGN KEY (role_id) REFERENCES roles(id)
 );
+
+insert into user_roles(user_id, role_id) VALUES(1,2);
+insert into user_roles(user_id, role_id) VALUES(2,1);
+insert into user_roles(user_id, role_id) VALUES(3,1);
 
 CREATE SEQUENCE seq_contact_user;
 CREATE TABLE Contact_user (
@@ -50,6 +48,9 @@ CREATE TABLE Contact_user (
     dateheure TIMESTAMP,
     FOREIGN KEY (idUser) REFERENCES users(id)
 );
+
+insert into contact_user(idUser, contact, type, dateheure) VALUES(2, '034 56 123 89', 'numero', '2024-12-31T12:34:56');
+insert into contact_user(idUser, contact, type, dateheure) VALUES(3, '034 58 178 56', 'numero', '2024-12-31T12:34:56');
 
 CREATE SEQUENCE seq_annonce;
 CREATE TABLE annonce(
@@ -66,12 +67,19 @@ CREATE TABLE annonce(
     FOREIGN KEY (idVoiture) REFERENCES voiture (idVoiture)
 );
 
+CREATE SEQUENCE seq_photo_annonce;
+CREATE TABLE photo_annonce (
+    id int DEFAULT nextval('seq_photo_annonce') PRIMARY KEY,
+    idAnnonce VARCHAR(17),
+    image VARCHAR(250),
+    FOREIGN KEY (idAnnonce) REFERENCES annonce (idAnnonce)
+);
+
+
 INSERT INTO annonce (titre,descriptions,idUser,idVoiture,prix,dateheure,etat) VALUES 
-('Annonce 1',  'Bien',1,'VTR6', 5000,'2024-01-25T12:34:56',0),
-('Annonce 2',  'Bien',2,'VTR7', 5600,'2024-01-25T08:34:56',0),
-('Annonce 3',  'Bien',3,'VTR8', 9000,'2024-01-25T12:34:56',0),
-('Annonce 4',  'Bien',3,'VTR9', 4000,'2024-01-25T12:34:56',0),
-('Annonce 5',  'Bien',2,'VTR10',3200,'2024-01-25T12:34:56',0);
+('Annonce 1',  'Bien',1,'VTR1', 5000,'2024-01-29T12:34:56',3),
+('Annonce 2',  'Bien',2,'VTR2', 5600,'2024-01-20T08:34:56',3),
+('Annonce 3',  'Bien',3,'VTR3', 9000,'2024-01-22T12:34:56',3);
 
 CREATE SEQUENCE seq_favori;
 CREATE TABLE favori(
@@ -100,7 +108,10 @@ CREATE SEQUENCE seq_vente;
 CREATE TABLE vente (
     idVente VARCHAR(17) DEFAULT 'VENTE'||nextval('seq_vente') PRIMARY KEY,
     idAnnonce VARCHAR(17) UNIQUE,
+    idUser int,
+    prix double precision,
     dateheure TIMESTAMP,
+    FOREIGN KEY (idUser) REFERENCES users(id),
     FOREIGN KEY (idAnnonce) REFERENCES annonce (idAnnonce)
 );
 
@@ -116,6 +127,39 @@ INSERT INTO commission (dateheure,commission) VALUES
 ('2024-01-28T01:34:56',25.5),
 ('2024-01-29T03:34:56',43);
 
+
+CREATE SEQUENCE seq_negociation;
+CREATE TABLE negociation (
+    idNegociation VARCHAR(17) DEFAULT 'NEGOC'||nextval('seq_negociation') PRIMARY KEY,
+    idAnnonce VARCHAR(17) ,
+    acheteur int,
+    etat int default 0,
+    dateheure TIMESTAMP,
+    FOREIGN KEY (acheteur) REFERENCES users(id),
+    FOREIGN KEY (idAnnonce) REFERENCES annonce (idAnnonce)
+);
+
+INSERT INTO commission (dateheure,commission) VALUES 
+('2024-01-25T01:34:56',20);
+
+
+INSERT INTO VENTE (idAnnonce,idUser,prix,dateheure) VALUES 
+('ANONC6',2,2000, '2024-01-29T01:34:56');
+
+
+INSERT INTO users (id, username, email, dtn, sexe, password, dateheure)
+VALUES
+  (1, 'utilisateur1', 'utilisateur1@example.com', '1990-01-01', 1, 'motdepasse1', '2024-01-25T12:34:56');
+
+
+INSERT INTO users (id, username, email, dtn, sexe, password, dateheure)
+VALUES
+  (2, 'utilisateur2', 'utilisateur1@example.com', '1990-01-01', 1, 'motdepasse2', '2024-01-25T12:34:56');
+
+INSERT INTO users (id, username, email, dtn, sexe, password, dateheure)
+VALUES
+  (3, 'utilisateur3', 'utilisateur1@example.com', '1990-01-01', 1, 'motdepasse3', '2024-12-31T12:34:56');
+
 create SEQUENCE seq_mois;
 CREATE TABLE Mois (
     idMois VARCHAR(15) DEFAULT 'MOIS'||nextval('seq_mois') PRIMARY KEY,
@@ -123,21 +167,7 @@ CREATE TABLE Mois (
     numero int not null
 );
 
-INSERT INTO Mois (libelle, numero) VALUES
-    ('Janvier', 1),
-    ('Fevrier', 2),
-    ('Mars', 3),
-    ('Avril', 4),
-    ('Mai', 5),
-    ('Juin', 6),
-    ('Juillet', 7),
-    ('Aout', 8),
-    ('Septembre', 9),
-    ('Octobre', 10),
-    ('Novembre', 11),
-    ('Decembre', 12);
-
-
+-- Utilisateur cette semaine et lastweek
 CREATE VIEW nbUsersLastWeek AS (
 SELECT
   COUNT(*) AS nombre_inscrits
@@ -146,7 +176,6 @@ WHERE TO_CHAR(dateheure + INTERVAL '1 week', 'IYYY-IW') = TO_CHAR(CURRENT_DATE, 
 );
 
 
--- Utilisateur cette semaine et lastweek
 CREATE OR REPLACE VIEW nbUsersWeek AS (
 SELECT
   COUNT(*) AS nombre_inscrits,
@@ -156,31 +185,34 @@ WHERE TO_CHAR(dateheure, 'IYYY-IW') = TO_CHAR(CURRENT_DATE, 'IYYY-IW')
 );
 
 
-CREATE VIEW VenteLastWeek AS (
+
+-- Vente cette semaine et lastweek
+CREATE OR REPLACE VIEW VenteLastWeek AS (
 SELECT
-  sum(a.prix) as totalVente
+  case when sum(a.prix) is null then 0 else sum(v.prix) end as totalVente
 FROM vente v
 JOIN annonce a on a.idAnnonce = v.idAnnonce
 WHERE TO_CHAR(v.dateheure + INTERVAL '1 week', 'IYYY-IW') = TO_CHAR(CURRENT_DATE, 'IYYY-IW')
 );
--- Vente cette semaine et lastweek
+
 CREATE OR REPLACE VIEW VenteWeek AS (
 SELECT
-  sum(a.prix) as totalVente,
+   case when sum(a.prix) is null then 0 else sum(v.prix) end as totalVente,
   (select totalVente from vENTELastWeek) as last
 FROM vente v
 JOIN annonce a on a.idAnnonce = v.idAnnonce
 WHERE TO_CHAR(v.dateheure, 'IYYY-IW') = TO_CHAR(CURRENT_DATE, 'IYYY-IW')
 );
 
-
+--Annonce Ajoute cette semaine et lastweek
 CREATE VIEW nbAnnonceLastWeek AS (
 SELECT
   COUNT(*) AS nombre
 FROM annonce
 WHERE TO_CHAR(dateheure + INTERVAL '1 week', 'IYYY-IW') = TO_CHAR(CURRENT_DATE, 'IYYY-IW')
 );
---Annonce Ajoute cette semaine et lastweek
+
+
 CREATE OR REPLACE VIEW nbAnnonceWeek AS (
 SELECT
   COUNT(*) AS nombre,
@@ -189,12 +221,12 @@ FROM annonce
 WHERE TO_CHAR(dateheure, 'IYYY-IW') = TO_CHAR(CURRENT_DATE, 'IYYY-IW')
 );
 
+
 -- Commision et  VENTE
 CREATE OR REPLACE VIEW V_vente_Commission as ( 
 SELECT
-  v.idVente,a.prix,c.commission, v.dateheure,(a.prix*c.commission/100) as benefice
+  v.idVente,v.prix,c.commission, v.dateheure,(v.prix*c.commission/100) as benefice
 FROM vente v
-JOIN annonce a on a.idAnnonce = v.idAnnonce
 JOIN commission c on v.dateheure>c.dateheure
 JOIN
     (SELECT
@@ -205,24 +237,26 @@ JOIN
 ON vu.idvente = v.idvente and vu.dateheure = c.dateheure
 );
 
-CREATE VIEW CommissionLastWeek AS (
+-- COMMISION CETte semaine et la semaine dereniere
+CREATE OR REPLACE VIEW CommissionLastWeek AS (
 SELECT
-  sum(benefice) as benefice
+  case when sum(benefice) is null then 0 else sum(benefice) end as benefice
 FROM V_vente_Commission
 WHERE TO_CHAR(dateheure + INTERVAL '1 week', 'IYYY-IW') = TO_CHAR(CURRENT_DATE, 'IYYY-IW')
 );
--- COMMISION CETte semaine et la semaine dereniere
+
 CREATE OR REPLACE VIEW CommissionWeek AS (
 SELECT
-  sum(benefice) as benefice,
+  case when sum(benefice) is null then 0 else sum(benefice) end as benefice,
   (select benefice from CommissionLastWeek) as last
 FROM V_vente_Commission
 WHERE TO_CHAR(dateheure, 'IYYY-IW') = TO_CHAR(CURRENT_DATE, 'IYYY-IW')
 );
 
 -- lisTE DES MEILLEURS VENTE
+
 CREATE OR REPLACE VIEW BESTVENTE AS (
-SELECT v.idvente,a.idAnnonce,u.username,m.nomModele,a.prix,RANK() OVER (ORDER BY a.prix desc) AS rank_num FROM V_vente_Commission v
+SELECT v.idvente,a.idAnnonce,u.username,m.nomModele,v.prix,RANK() OVER (ORDER BY a.prix desc) AS rank_num FROM V_vente_Commission v
 JOIN vente ve on ve.idvente = v.idvente
 JOIN Annonce a on a.idAnnonce = ve.idAnnonce
 JOIN users u on a.iduser = u.id
@@ -230,6 +264,20 @@ JOIN voiture vo on vo.idvoiture = a.idvoiture
 JOIN modele m on vo.idmodele = m.idmodele
 LIMIT 5
 );
+
+INSERT INTO Mois (libelle,numero) VALUES
+    ('Janvier',1),
+    ('Fevrier',2),
+    ('Mars',3),
+    ('Avril',4),
+    ('Mai',5),
+    ('Juin',6),
+    ('Juillet',7),
+    ('Aout',8),
+    ('Septembre',9),
+    ('Octobre',10),
+    ('Novembre',11),
+    ('Decembre',12);
 
 -- View moi
 create view v_mois as (
@@ -269,8 +317,8 @@ on EXTRACT(YEAR FROM u.dateheure) = v.annee and EXTRACT(MONTH FROM u.dateheure) 
 group by vu.libelle,vu.mois
 );
 
-create view stat_AnnonceUser as ( 
-select su.libelle,su.mois,su.nombre as user,sa.nombre as annonce from stat_user su
+create or replace view stat_AnnonceUser as ( 
+select su.libelle,su.mois,su.nombre as user,sa.nombre as annonce, rank() OVER (ORDER BY su.mois asc) AS rank_num from stat_user su
 join stat_annonce sa on sa.mois = su.mois
 );
 
@@ -346,6 +394,4 @@ group by iduser,idAnnonce
 ) vu
 where etat = 1
 );
-
-
 

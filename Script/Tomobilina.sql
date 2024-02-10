@@ -68,6 +68,8 @@ CREATE TABLE modele (
 );
 
 insert into modele(idmarque, idcategorie, nomModele, annee, nbrPlaces, nbrPortes, photo, etat) VALUES('MRQ1', 'CAT1', 'Test Modele', 2010, 5, 4, null, 1);
+insert into modele(idmarque, idcategorie, nomModele, annee, nbrPlaces, nbrPortes, photo, etat) VALUES('MRQ2', 'CAT3', 'Test2 Modele', 2015, 6, 4, null, 1);
+insert into modele(idmarque, idcategorie, nomModele, annee, nbrPlaces, nbrPortes, photo, etat) VALUES('MRQ3', 'CAT2', 'Test3 Modele', 2020, 4, 4, null, 1);
 
 CREATE TABLE energie (
     idEnergie VARCHAR(15) DEFAULT 'ENE'||nextval('seq_energie') PRIMARY KEY,
@@ -105,6 +107,8 @@ CREATE TABLE equipement (
     etat INT DEFAULT 1
 );
 insert into equipement(nomequipement, etat) values('Bluetooth', 1);
+insert into equipement(nomequipement, etat) values('Equipement2', 1);
+insert into equipement(nomequipement, etat) values('Equipement3', 1);
 
 CREATE TABLE voiture (
     idVoiture VARCHAR(15) DEFAULT 'VTR'||nextval('seq_voiture') PRIMARY KEY,  
@@ -121,12 +125,20 @@ CREATE TABLE voiture (
     FOREIGN KEY (idcouleur) REFERENCES couleurs(idcouleur)
 );
 INSERT INTO voiture(idmodele, kilometrage, idenergie, idboitevitesse, idcouleur, consommation, etat) VALUES('MOD1', 12000, 'ENE1', 'BTV2', 'COL2', 2.6, 1);
+INSERT INTO voiture(idmodele, kilometrage, idenergie, idboitevitesse, idcouleur, consommation, etat) VALUES('MOD2', 9000, 'ENE2', 'BTV1', 'COL1', 1.5, 1);
+INSERT INTO voiture(idmodele, kilometrage, idenergie, idboitevitesse, idcouleur, consommation, etat) VALUES('MOD3', 8000, 'ENE1', 'BTV2', 'COL3', 1.2, 1);
 
+CREATE SEQUENCE seq_equipementVoiture;
 CREATE TABLE equipementVoiture (
+    idequipementvoiture VARCHAR(15) DEFAULT 'EQVTR'||nextval('seq_equipementVoiture') PRIMARY KEY,  
     idvoiture VARCHAR(15) REFERENCES voiture,
     idequipement VARCHAR(15) REFERENCES equipement,
     etat INT DEFAULT 1,
+    FOREIGN KEY (idvoiture) REFERENCES voiture(idvoiture),
     FOREIGN KEY (idequipement) REFERENCES equipement(idequipement)
 );
 
 insert into equipementvoiture(idvoiture, idequipement) VALUES('VTR1', 'EQP1');
+insert into equipementvoiture(idvoiture, idequipement) VALUES('VTR1', 'EQP2');
+insert into equipementvoiture(idvoiture, idequipement) VALUES('VTR2', 'EQP3');
+insert into equipementvoiture(idvoiture, idequipement) VALUES('VTR3', 'EQP3');

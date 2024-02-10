@@ -11,18 +11,16 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Optional;
-import jakarta.persistence.EntityNotFoundException;
 import com.codex.tomobilina.models.PaysMarque;
 import com.codex.tomobilina.models.Resultat;
 import com.codex.tomobilina.services.PaysMarqueService;
-import org.springframework.transaction.annotation.Transactional;
 /**
  *
  * @author Tohy
  */
 @CrossOrigin(origins = "*", maxAge = 3600)
 @RestController
-@RequestMapping("tomobilina/paysmarques")
+@RequestMapping("/tomobilina/paysmarques")
 public class PaysMarqueController {
 
     @Autowired

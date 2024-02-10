@@ -13,6 +13,7 @@ import com.codex.tomobilina.models.Voiture;
 import com.codex.tomobilina.repository.UserRepository;
 import com.codex.tomobilina.services.AnnonceService;
 import com.codex.tomobilina.services.FavoriService;
+import com.codex.tomobilina.services.ImageUploadingService;
 import com.codex.tomobilina.services.VenteService;
 import java.sql.Timestamp;
 import java.util.ArrayList;
@@ -22,6 +23,7 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -39,7 +41,7 @@ import org.springframework.web.multipart.MultipartFile;
  */
 @CrossOrigin(origins = "*", maxAge = 3600)
 @RestController
-@RequestMapping("tomobilina/annonce")
+@RequestMapping("/tomobilina/annonce")
 public class AnnonceController {
     @Autowired
     private AnnonceService annonceService;
@@ -47,11 +49,14 @@ public class AnnonceController {
     private FavoriService favoriService;
     @Autowired
     private VenteService venteService;
+    @Autowired
+    private ImageUploadingService imageUploadingService;
     
     @Autowired
     UserRepository userRepository;
 
     @GetMapping
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<Resultat> getAllAnnonce() {
         try {
             List<Annonce> an = annonceService.getAllAnnonce();
@@ -64,6 +69,7 @@ public class AnnonceController {
     }
 
     @GetMapping("/valid")
+//    @PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
     public ResponseEntity<Resultat> getAllAnnonceValid() {
         try {
             Resultat resultat = new Resultat("OK", null, annonceService.getAllAnnonceByEtat(5));
@@ -75,6 +81,7 @@ public class AnnonceController {
     }
 
     @GetMapping("/invalid")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<Resultat> getAllAnnonceInValid() {
         try {
             Resultat resultat = new Resultat("OK", null, annonceService.getAllAnnonceByEtat(3));
@@ -86,6 +93,7 @@ public class AnnonceController {
     }
     
     @GetMapping("/vendu")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<Resultat> getAllAnnonceVendu() {
         try {
             Resultat resultat = new Resultat("OK", null, annonceService.getAllAnnonceByEtat(10));
@@ -97,6 +105,7 @@ public class AnnonceController {
     }
 
     @GetMapping("/recherche")
+    @PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
     public ResponseEntity<Resultat> recherche(
             @RequestParam(required = false) String nomModele,
             @RequestParam(required = false) List<String> idMarques,
@@ -156,6 +165,7 @@ public class AnnonceController {
     }
     
     @PutMapping("/validate/{id}")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<Resultat> ValiderAnnonce(@PathVariable String id) {
         try {
             Optional<Annonce> an = annonceService.getAnnonceById(id);
@@ -175,6 +185,7 @@ public class AnnonceController {
     }
 
     @GetMapping("/user/{id}")
+    @PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
     public ResponseEntity<Resultat> getAllAnnonceUser(@PathVariable int id) {
         try {
             List<Annonce> anonceUser = annonceService.getAllAnnonceUser(id);
@@ -192,6 +203,7 @@ public class AnnonceController {
     }
 
     @GetMapping("/user/favori/{id}")
+    @PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
     public List<Annonce> getAllAnnonceFavoriUser(@PathVariable int id) {
         List<Favori> allFav = favoriService.getAllFavoriUser(id);
         List<Annonce> favUser = new ArrayList<>();
@@ -202,6 +214,7 @@ public class AnnonceController {
     }
 
     @GetMapping("/{id}")
+    @PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
     public ResponseEntity<Resultat> getAnnonceById(@PathVariable String id) {
         try {
             Optional<Annonce> anon = annonceService.getAnnonceById(id);
@@ -218,6 +231,7 @@ public class AnnonceController {
     }
 
     @PostMapping("/add")
+//    @PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
     public ResponseEntity<Resultat> add(
             @RequestParam("titre") String titre,
             @RequestParam("descriptions") String descriptions,
@@ -226,11 +240,14 @@ public class AnnonceController {
             @RequestParam("prix") double prix,
             @RequestParam("photo") MultipartFile photo) {
         try {
-            int etat = 1;
+            int etat = 3;
             Date currentDate = new Date();
             // Convertir la date en timestamp
             Timestamp dateheure = new Timestamp(currentDate.getTime());
-            Annonce anon = new Annonce(titre, descriptions, new User(idUser), new Voiture(idVoiture), prix, titre, dateheure, etat);
+            
+            String image = imageUploadingService.upload(photo);
+            
+            Annonce anon = new Annonce(titre, descriptions, new User(idUser), new Voiture(idVoiture), prix, image, dateheure, etat);
             Resultat resultat = new Resultat("CREATED", null, annonceService.saveAnnonce(anon));
             return new ResponseEntity<>(resultat, HttpStatus.CREATED);
         } catch (Exception e) {
@@ -240,6 +257,7 @@ public class AnnonceController {
     }
 
     @PutMapping("/{id}")
+    @PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
     public ResponseEntity<String> updateAnnonce(@PathVariable String id, @RequestBody Annonce anon) {
         annonceService.updateAnnonce(id, anon);
         return ResponseEntity.ok("Annonce Update");

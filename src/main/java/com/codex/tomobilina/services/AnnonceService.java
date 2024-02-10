@@ -30,7 +30,11 @@ public class AnnonceService {
     private VoitureService voitureService;
 
     public List<Annonce> getAllAnnonce() {
-        return annonceRepository.findAll();
+        try {
+            return annonceRepository.findAll();
+        } catch (Exception e) {
+            throw e;
+        }
     }
     
     public List<Annonce> getAllAnnonceUser(int idUser) {

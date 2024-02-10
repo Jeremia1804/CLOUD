@@ -21,7 +21,7 @@ import org.springframework.web.multipart.MultipartFile;
 @CrossOrigin(origins = "*", maxAge = 3600)
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("tomobilina/up")
+@RequestMapping("/tomobilina/up")
 public class ImageUploadingController {
     private final ImageUploadingService imageService;
 

@@ -9,10 +9,18 @@ import com.codex.tomobilina.models.NbAnnonceWeek;
 import com.codex.tomobilina.models.NbUsersWeek;
 import com.codex.tomobilina.models.Stat_AnnonceUser;
 import com.codex.tomobilina.models.Stat_PrixCommission;
+import com.codex.tomobilina.models.Total_vendu;
+import com.codex.tomobilina.models.V_StatModele;
+import com.codex.tomobilina.models.V_Statcategorie;
+import com.codex.tomobilina.models.V_Statmarque;
+import com.codex.tomobilina.models.Vendu_tous;
 import com.codex.tomobilina.models.VenteLastWeek;
 import com.codex.tomobilina.models.VenteWeek;
 import com.codex.tomobilina.repository.AnnonceRepository;
+import com.codex.tomobilina.repository.CategorieRepository;
 import com.codex.tomobilina.repository.CommissionRepository;
+import com.codex.tomobilina.repository.MarqueRepository;
+import com.codex.tomobilina.repository.ModeleRepository;
 import com.codex.tomobilina.repository.Stat_PrixCommissionRepository;
 import com.codex.tomobilina.repository.UserRepository;
 import com.codex.tomobilina.repository.VenteRepository;
@@ -41,6 +49,15 @@ public class StatistiqueService {
     
     @Autowired
     Stat_PrixCommissionRepository stat_PrixCommissionRepository;
+    
+    @Autowired
+    ModeleRepository modeleRepository;
+    
+    @Autowired
+    CategorieRepository categorieRepository;
+    
+    @Autowired
+    MarqueRepository marqueRepository;
     
     public int getNbUsersLastWeek() {
         return userRepository.findNbrUserLastWeek();
@@ -76,5 +93,25 @@ public class StatistiqueService {
     
     public List<Stat_AnnonceUser> getStat_AnnonceUser() {
         return userRepository.findStat_AnnonceUser();
+    }
+    
+    public Total_vendu getTotalVendu() {
+        return venteRepository.findTotalVendu();
+    }
+    
+    public List<Vendu_tous> getVendu_tous() {
+        return venteRepository.findVenduTous();
+    }
+    
+    public List<V_StatModele> getStatModele() {
+        return modeleRepository.findStatModel();
+    }
+    
+    public List<V_Statcategorie> getStatCategorie() {
+        return categorieRepository.findStatCategorie();
+    }
+    
+    public List<V_Statmarque> getStatMarque() {
+        return marqueRepository.findStatmarque();
     }
 }

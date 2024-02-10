@@ -6,7 +6,6 @@ package com.codex.tomobilina.controllers;
 
 import com.codex.tomobilina.models.Commission;
 import com.codex.tomobilina.models.Resultat;
-import com.codex.tomobilina.services.CategorieService;
 import com.codex.tomobilina.services.CommissionService;
 import java.sql.Timestamp;
 import java.util.Date;
@@ -25,7 +24,7 @@ import org.springframework.web.bind.annotation.*;
 
 @CrossOrigin(origins = "*", maxAge = 3600)
 @RestController
-@RequestMapping("tomobilina/commission")
+@RequestMapping("/tomobilina/commission")
 public class CommissionController {
     @Autowired
     private CommissionService commissionService;

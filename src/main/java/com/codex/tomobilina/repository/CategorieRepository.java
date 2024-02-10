@@ -5,11 +5,16 @@
 package com.codex.tomobilina.repository;
 
 import com.codex.tomobilina.models.Categorie;
+import com.codex.tomobilina.models.V_Statcategorie;
+import java.util.List;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
 
 /**
  *
  * @author Tohy
  */
 public interface CategorieRepository extends JpaRepository<Categorie, String> {
+    @Query("select v from V_Statcategorie v")
+    List<V_Statcategorie> findStatCategorie();
 }

@@ -5,10 +5,10 @@ import java.util.HashSet;
 import java.util.Set;
 
 import jakarta.persistence.*;
-import jakarta.validation.constraints.Email;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.Size;
 import java.sql.Date;
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Size;
 
 @Entity
 @Table(name = "users", 
@@ -31,6 +31,7 @@ public class User {
   private String email;
   
   private Date dtn;
+  
   int sexe;
 
   @NotBlank
@@ -39,7 +40,7 @@ public class User {
 
   private Timestamp dateheure;
 
-  @ManyToMany(fetch = FetchType.LAZY)
+  @ManyToMany(fetch = FetchType.EAGER)
   @JoinTable(  name = "user_roles", 
         joinColumns = @JoinColumn(name = "user_id"), 
         inverseJoinColumns = @JoinColumn(name = "role_id"))
@@ -49,8 +50,8 @@ public class User {
         this.id = id;
     }
 
-  public User() {
-  }
+    public User() {
+    }
 
   public User(String username, String email, Date dtn, int sexe, String password, Timestamp dateheure) {
     this.username = username;

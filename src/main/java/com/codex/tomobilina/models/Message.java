@@ -1,7 +1,6 @@
 package com.codex.tomobilina.models;
 
 import lombok.*;
-
 import java.util.Date;
 
 @NoArgsConstructor
@@ -15,5 +14,6 @@ public class Message {
     private String message;
     private String date;
     private Status status;
+
     
 }

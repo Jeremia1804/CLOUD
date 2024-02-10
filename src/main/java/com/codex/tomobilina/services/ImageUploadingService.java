@@ -64,7 +64,7 @@ public class ImageUploadingService {
             return URL;
         } catch (Exception e) {
             e.printStackTrace();
-            return "Image couldn't upload, Something went wrong";
+            return null;
         }
     }
 }

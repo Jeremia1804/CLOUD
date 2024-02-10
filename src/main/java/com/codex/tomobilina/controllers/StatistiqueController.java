@@ -13,7 +13,12 @@ import com.codex.tomobilina.models.NbUsersWeek;
 import com.codex.tomobilina.models.Resultat;
 import com.codex.tomobilina.models.Stat_AnnonceUser;
 import com.codex.tomobilina.models.Stat_PrixCommission;
+import com.codex.tomobilina.models.Total_vendu;
+import com.codex.tomobilina.models.V_StatModele;
+import com.codex.tomobilina.models.V_Statcategorie;
+import com.codex.tomobilina.models.V_Statmarque;
 import com.codex.tomobilina.models.V_vente_Commission;
+import com.codex.tomobilina.models.Vendu_tous;
 import com.codex.tomobilina.models.VenteLastWeek;
 import com.codex.tomobilina.models.VenteWeek;
 import com.codex.tomobilina.services.CommissionService;
@@ -207,6 +212,66 @@ public class StatistiqueController {
     public ResponseEntity<Resultat> getStat_AnnonceUser() {
         try {
             List<Stat_AnnonceUser> stat = statistiqueService.getStat_AnnonceUser();
+            Resultat resultat = new Resultat("OK", null, stat);
+            return new ResponseEntity<>(resultat, HttpStatus.OK);
+        } catch (Exception e) {
+            Resultat resultat = new Resultat("NOT FOUND", e.getMessage(), null);
+            return new ResponseEntity<>(resultat, HttpStatus.NOT_FOUND);
+        }
+    }
+    
+    @GetMapping("/totalvendu")
+    public ResponseEntity<Resultat> getTotalVendu() {
+        try {
+            Total_vendu stat = statistiqueService.getTotalVendu();
+            Resultat resultat = new Resultat("OK", null, stat);
+            return new ResponseEntity<>(resultat, HttpStatus.OK);
+        } catch (Exception e) {
+            Resultat resultat = new Resultat("NOT FOUND", e.getMessage(), null);
+            return new ResponseEntity<>(resultat, HttpStatus.NOT_FOUND);
+        }
+    }
+    
+    @GetMapping("/vendutous")
+    public ResponseEntity<Resultat> getVendu_tous() {
+        try {
+            List<Vendu_tous> stat = statistiqueService.getVendu_tous();
+            Resultat resultat = new Resultat("OK", null, stat);
+            return new ResponseEntity<>(resultat, HttpStatus.OK);
+        } catch (Exception e) {
+            Resultat resultat = new Resultat("NOT FOUND", e.getMessage(), null);
+            return new ResponseEntity<>(resultat, HttpStatus.NOT_FOUND);
+        }
+    }
+    
+    @GetMapping("/statmodele")
+    public ResponseEntity<Resultat> getStatModele() {
+        try {
+            List<V_StatModele> stat = statistiqueService.getStatModele();
+            Resultat resultat = new Resultat("OK", null, stat);
+            return new ResponseEntity<>(resultat, HttpStatus.OK);
+        } catch (Exception e) {
+            Resultat resultat = new Resultat("NOT FOUND", e.getMessage(), null);
+            return new ResponseEntity<>(resultat, HttpStatus.NOT_FOUND);
+        }
+    }
+    
+    @GetMapping("/statcategorie")
+    public ResponseEntity<Resultat> getStatCategorie() {
+        try {
+            List<V_Statcategorie> stat = statistiqueService.getStatCategorie();
+            Resultat resultat = new Resultat("OK", null, stat);
+            return new ResponseEntity<>(resultat, HttpStatus.OK);
+        } catch (Exception e) {
+            Resultat resultat = new Resultat("NOT FOUND", e.getMessage(), null);
+            return new ResponseEntity<>(resultat, HttpStatus.NOT_FOUND);
+        }
+    }
+    
+    @GetMapping("/statmarque")
+    public ResponseEntity<Resultat> getStatMarque() {
+        try {
+            List<V_Statmarque> stat = statistiqueService.getStatMarque();
             Resultat resultat = new Resultat("OK", null, stat);
             return new ResponseEntity<>(resultat, HttpStatus.OK);
         } catch (Exception e) {

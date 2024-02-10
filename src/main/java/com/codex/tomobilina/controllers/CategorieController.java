@@ -12,7 +12,6 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 import java.util.Optional;
 import com.codex.tomobilina.models.Categorie;
-import com.codex.tomobilina.models.Couleurs;
 import com.codex.tomobilina.models.Resultat;
 import com.codex.tomobilina.services.CategorieService;
 /**
@@ -21,7 +20,7 @@ import com.codex.tomobilina.services.CategorieService;
  */
 @CrossOrigin(origins = "*", maxAge = 3600)
 @RestController
-@RequestMapping("tomobilina/categories")
+@RequestMapping("/tomobilina/categories")
 public class CategorieController {
 
     @Autowired

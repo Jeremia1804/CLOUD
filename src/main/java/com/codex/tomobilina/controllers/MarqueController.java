@@ -11,14 +11,12 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Optional;
-import jakarta.persistence.EntityNotFoundException;
 import com.codex.tomobilina.models.Marque;
 import com.codex.tomobilina.models.PaysMarque;
 import com.codex.tomobilina.models.Resultat;
 import com.codex.tomobilina.services.ImageUploadingService;
 import com.codex.tomobilina.services.MarqueService;
 import com.codex.tomobilina.services.PaysMarqueService;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 /**
@@ -27,7 +25,7 @@ import org.springframework.web.multipart.MultipartFile;
  */
 @CrossOrigin(origins = "*", maxAge = 3600)
 @RestController
-@RequestMapping("tomobilina/marques")
+@RequestMapping("/tomobilina/marques")
 public class MarqueController {
 
     @Autowired
@@ -89,10 +87,8 @@ public class MarqueController {
     public ResponseEntity<Resultat> createMarque(
             @RequestParam("file") MultipartFile multipartFile,
             @RequestParam("nomMarque") String nomMarque,
-            @RequestParam("paysMarque") String paysMarque,
-            @RequestParam(required = false) int etat) {
+            @RequestParam("paysMarque") String paysMarque) {
         try {
-            etat = 1;
             Optional<PaysMarque> pays = paysMarqueService.getPaysMarqueById(paysMarque);
             if (pays.isEmpty()) {
                 Resultat resultat = new Resultat("NOT FOUND", "Id Pays Not Found", null);
@@ -100,7 +96,7 @@ public class MarqueController {
             }
 
             String image = imageService.upload(multipartFile);
-            Marque marque = new Marque(nomMarque, pays.get(), image, etat);
+            Marque marque = new Marque(nomMarque, pays.get(), image, 1);
             Marque createdMarque = marqueService.saveMarque(marque);
 
             Resultat resultat = new Resultat("CREATED", null, createdMarque);
@@ -114,10 +110,10 @@ public class MarqueController {
     @PutMapping("/{id}")
     public ResponseEntity<Resultat> updateMarque(@PathVariable String id, @RequestBody Marque m) {
         try {
-            Resultat resultat = new Resultat("Couleurs UPDATED", null, marqueService.updateMarque(id, m));
+            Resultat resultat = new Resultat("Marque UPDATED", null, marqueService.updateMarque(id, m));
             return new ResponseEntity<>(resultat, HttpStatus.OK);
         } catch (Exception e) {
-            Resultat resultat = new Resultat("Couleurs NOT UPDATED", e.getMessage(), null);
+            Resultat resultat = new Resultat("Marque NOT UPDATED", e.getMessage(), null);
             return new ResponseEntity<>(resultat, HttpStatus.BAD_REQUEST);
         }
     }

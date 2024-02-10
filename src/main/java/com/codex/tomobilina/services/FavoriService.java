@@ -5,6 +5,7 @@
 package com.codex.tomobilina.services;
 
 import com.codex.tomobilina.models.Favori;
+import com.codex.tomobilina.models.V_Favori;
 import com.codex.tomobilina.repository.FavoriRepository;
 import java.util.List;
 import java.util.Optional;
@@ -23,6 +24,10 @@ public class FavoriService {
     
     public List<Favori> getAllFavoriUser(int idUser) {
         return favoriRepository.findByUser_Id(idUser);
+    }
+    
+    public List<V_Favori> getAnnonceFavUser(int idUser) {
+        return favoriRepository.findFavori(idUser);
     }
     
     public List<Favori> getAllFavoriUserEtat(int idUser, int etat) {
