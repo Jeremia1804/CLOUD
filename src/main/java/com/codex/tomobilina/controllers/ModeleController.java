@@ -111,7 +111,8 @@ public class ModeleController {
         try {
             String image = imageService.upload(photo);
             Modele modele = new Modele(new Marque(idmarque), new Categorie(idcategorie), nommodele, annee, nbrplaces, nbrportes, image, 1);
-            Resultat resultat = new Resultat("CREATED", null, modeleService.saveModele(modele));
+            Modele mo = modeleService.saveModele(modele);
+            Resultat resultat = new Resultat("CREATEDS", null, modeleService.getModeleById(mo.getIdModele()).get());
             return new ResponseEntity<>(resultat, HttpStatus.CREATED);
         } catch (Exception e) {
             
