@@ -29,6 +29,7 @@ public class SecurityConfig {
                 .and()
                 .authorizeRequests((requests) -> requests
                         .requestMatchers( "/tomobilina/auth/signin","/tomobilina/auth/signup","/tomobilina/annonce/valid").permitAll()
+                        .requestMatchers( "/tomobilina/annonce/**").permitAll()
                         .requestMatchers( "/ws/**","/ws","/tomobilina/messenger/**").permitAll()
 //                        .antMatchers(HttpMethod.GET,"/categorys/**","marques")
                         .anyRequest().authenticated())

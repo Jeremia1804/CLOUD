@@ -17,7 +17,6 @@ import java.io.InputStream;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
-import java.util.UUID;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -35,7 +34,7 @@ public class ImageUploadingService {
         Credentials credentials = GoogleCredentials.fromStream(inputStream);
         Storage storage = StorageOptions.newBuilder().setCredentials(credentials).build().getService();
         storage.create(blobInfo, Files.readAllBytes(file.toPath()));
-        fileName = fileName.replace("'"," ");
+//        fileName = fileName.replace("'"," ");
         String DOWNLOAD_URL = "https://firebasestorage.googleapis.com/v0/b/projettomobilina.appspot.com/o/%s?alt=media";
         return String.format(DOWNLOAD_URL, URLEncoder.encode(fileName, StandardCharsets.UTF_8));
     }
@@ -52,12 +51,13 @@ public class ImageUploadingService {
     private String getExtension(String fileName) {
         return fileName.substring(fileName.lastIndexOf("."));
     }
+    
 
 
     public String upload(MultipartFile multipartFile) {
         try {
             String fileName = multipartFile.getOriginalFilename();                        // to get original file name  // to generated random string values for file name.
-
+            
             File file = this.convertToFile(multipartFile, fileName);                      // to convert multipartFile to File
             String URL = this.uploadFile(file, fileName);                                   // to get uploaded file link
             file.delete();

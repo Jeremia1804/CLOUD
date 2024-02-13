@@ -81,7 +81,7 @@ public class AnnonceController {
     }
 
     @GetMapping("/invalid")
-    @PreAuthorize("hasRole('ADMIN')")
+//    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<Resultat> getAllAnnonceInValid() {
         try {
             Resultat resultat = new Resultat("OK", null, annonceService.getAllAnnonceByEtat(3));
@@ -165,7 +165,7 @@ public class AnnonceController {
     }
     
     @PutMapping("/validate/{id}")
-    @PreAuthorize("hasRole('ADMIN')")
+//    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<Resultat> ValiderAnnonce(@PathVariable String id) {
         try {
             Optional<Annonce> an = annonceService.getAnnonceById(id);
@@ -214,7 +214,7 @@ public class AnnonceController {
     }
 
     @GetMapping("/{id}")
-    @PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
+//    @PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
     public ResponseEntity<Resultat> getAnnonceById(@PathVariable String id) {
         try {
             Optional<Annonce> anon = annonceService.getAnnonceById(id);
@@ -239,7 +239,6 @@ public class AnnonceController {
             @RequestParam("idVoiture") String idVoiture,
             @RequestParam("prix") double prix,
             @RequestParam("photo") MultipartFile photo) {
-        System.out.println("tongba tsara nge le izsy ee");
         try {
             int etat = 3;
             Date currentDate = new Date();
